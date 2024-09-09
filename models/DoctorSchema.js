@@ -4,9 +4,9 @@ const DoctorSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   name: { type: String, required: true },
-  phone: { type: Number },
+  phone: { type: String },
   photo: { type: String },
-  ticketPrice: { type: Number },
+  ticketPrice: { type: String },
   role: {
     type: String,
   },
