@@ -21,7 +21,7 @@ export const getCheckoutSession = async (req, res) => {
         {
           price_data: {
             currency: "bdt",
-            unit_amount: Number(doctor.ticketPrice) + 100,
+            unit_amount: doctor.ticketPrice + 100,
             product_data: {
               name: doctor.name,
               description: doctor.bio,
@@ -49,6 +49,8 @@ export const getCheckoutSession = async (req, res) => {
       session,
     });
   } catch (err) {
+    console.log(err);
+
     res.status(500).json({
       success: false,
       message: "Error creating checkout session",
