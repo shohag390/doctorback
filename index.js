@@ -7,6 +7,7 @@ import authRouter from "./Routes/authRoute.js";
 import userRouter from "./Routes/user.js";
 import doctorRouter from "./Routes/doctor.js";
 import reviewRouter from "./Routes/reviewRoute.js";
+import bookingRouter from "./Routes/bookingRoute.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/doctors", doctorRouter);
 app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/booking", bookingRouter);
 
 app.listen(port, () => {
   connectDB();
