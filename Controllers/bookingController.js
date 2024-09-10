@@ -21,7 +21,7 @@ export const getCheckoutSession = async (req, res) => {
         {
           price_data: {
             currency: "bdt",
-            unit_amount: Number(doctor.ticketPrice) + 100,
+            unit_amount: doctor.ticketPrice * 100,
             product_data: {
               name: doctor.name,
               description: doctor.bio,
@@ -37,7 +37,7 @@ export const getCheckoutSession = async (req, res) => {
     const booking = new Booking({
       doctor: doctor._id,
       user: user._id,
-      ticketPrice: Number(doctor.ticketPrice),
+      ticketPrice: doctor.ticketPrice,
       session: session.id,
     });
 
