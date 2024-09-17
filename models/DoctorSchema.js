@@ -36,7 +36,7 @@ const DoctorSchema = new mongoose.Schema({
   isApproved: {
     type: String,
     enum: ["pending", "approved", "cancelled"],
-    default: "approved",
+    default: "pending",
   },
   appointments: [{ type: mongoose.Types.ObjectId, ref: "Booking" }],
 });
