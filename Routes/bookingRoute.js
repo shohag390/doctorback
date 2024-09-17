@@ -1,13 +1,18 @@
 import express from "express";
-import { authenticate } from "../auth/verifyToken.js";
-import { getCheckoutSession } from "../Controllers/bookingController.js";
+import { authenticate, restrict } from "../auth/verifyToken.js";
+import {
+  createAppointment,
+  getAllBooking,
+} from "../Controllers/bookingController.js";
 
 const bookingRouter = express.Router();
+bookingRouter.get("/booking", getAllBooking);
 
 bookingRouter.post(
-  "/checkout-session/:doctorId",
+  "/booking/:id",
   authenticate,
-  getCheckoutSession
+  restrict(["patient"]),
+  createAppointment
 );
 
 export default bookingRouter;

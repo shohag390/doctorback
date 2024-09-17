@@ -5,7 +5,7 @@ import {
 } from "../Controllers/reviewController.js";
 import { authenticate, restrict } from "../auth/verifyToken.js";
 
-const reviewRouter = express.Router({ mergeParams: true }); //[note: mergeParams: true for nested route]
+const reviewRouter = express.Router({ mergeParams: true });
 
 reviewRouter
   .route("/")

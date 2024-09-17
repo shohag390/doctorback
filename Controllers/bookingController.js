@@ -1,57 +1,66 @@
-import User from "../models/UserSchema.js";
-import Doctor from "../models/DoctorSchema.js";
 import Booking from "../models/BookingSchema.js";
-import Stripe from "stripe";
+import Doctor from "../models/DoctorSchema.js";
+import User from "../models/UserSchema.js";
 
-export const getCheckoutSession = async (req, res) => {
+//create Appointment
+export const createAppointment = async (req, res) => {
+  const doctorId = req.params.id;
+  const newBooking = new Booking({
+    ...req.body,
+    doctor: doctorId,
+    user: req.userId,
+  });
+
   try {
-    const doctor = await Doctor.findById(req.params.doctorId);
-    const user = await User.findById(req.userId);
+    const booking = await newBooking.save();
 
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      success_url: `${process.env.CLIENT_SITE_URL}/checkout-success`,
-      cancel_url: `${req.protocol}://${req.get("host")}/doctors/${doctor.id}`,
-      customer_email: user.email,
-      client_reference_id: req.params.doctorId,
-      line_items: [
-        {
-          price_data: {
-            currency: "bdt",
-            unit_amount: doctor.ticketPrice * 100,
-            product_data: {
-              name: doctor.name,
-              description: doctor.bio,
-              images: [doctor.photo],
-            },
-          },
-          quantity: 1,
+    await Doctor.updateOne(
+      {
+        _id: doctorId,
+      },
+      {
+        $push: {
+          appointments: booking._id,
         },
-      ],
-    });
+      }
+    );
 
-    // create new booking
-    const booking = new Booking({
-      doctor: doctor._id,
-      user: user._id,
-      ticketPrice: doctor.ticketPrice,
-      session: session.id,
-    });
-
-    await booking.save();
+    await User.updateOne(
+      {
+        _id: req.userId,
+      },
+      {
+        $push: { appointments: booking._id },
+      }
+    );
 
     res.status(200).json({
       success: true,
-      message: "Successfully Paid",
-      session,
+      message: "Appointment submited",
     });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Error creating checkout session",
+      message: "There was a server site error",
+    });
+  }
+};
+
+export const getAllBooking = async (req, res) => {
+  try {
+    const booking = await Booking.find({})
+      .populate("user")
+      .populate("doctor", "name photo specialization");
+
+    res.status(200).json({
+      success: true,
+      message: "Successful get All Booking",
+      data: booking,
+    });
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: "Not found All booking",
     });
   }
 };

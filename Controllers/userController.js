@@ -1,4 +1,4 @@
-import BookingSchema from "../models/BookingSchema.js";
+import Booking from "../models/BookingSchema.js";
 import User from "../models/UserSchema.js";
 import Doctor from "../models/DoctorSchema.js";
 
@@ -105,10 +105,10 @@ export const getUserProfile = async (req, res) => {
 export const getMyAppointments = async (req, res) => {
   try {
     //step -1: retrieve appointments booking
-    const bookings = await BookingSchema.find({ user: req.userId });
+    const bookings = await Booking.find({ user: req.userId });
 
     //step -2: extract doctor ids from appointments booking
-    const doctorIds = bookings.map((el) => el.doctor.id);
+    const doctorIds = bookings.map((el) => el.doctor._id);
 
     //step -3: retrieve doctor using doctor ids
     const doctors = await Doctor.find({ _id: { $in: doctorIds } }).select(

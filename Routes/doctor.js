@@ -25,5 +25,4 @@ doctorRouter.get(
   restrict(["doctor"]),
   getDoctorProfile
 );
-
 export default doctorRouter;

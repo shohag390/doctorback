@@ -60,5 +60,3 @@ reviewSchema.post("save", function () {
 });
 
 export default mongoose.model("Review", reviewSchema);
-
-// 1.47:11
