@@ -44,10 +44,5 @@ app.listen(port, () => {
   console.log(`server is running at http://localhost:${port}`);
 });
 
-// mdshohagali1539
-// FcHfka1oMycho59f
-
-// http://localhost:5000/api/v1/user
-
 // JWT_SECRET_KEY GENARATE
 // require('crypto').randomBytes(64).toString('hex')
